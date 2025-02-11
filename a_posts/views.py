@@ -18,10 +18,8 @@ def home_page_view(request, tag=None):
     else:
         posts = Post.objects.all()
 
-    categories = Tag.objects.all()
     context = {
         "posts": posts,
-        "categories": categories,
         "tag": tag
     }
 
@@ -96,7 +94,6 @@ def post_page_view(request, pk):
     comment_form = CommentCreateForm()
     replyform = ReplyCreateForm()
 
-
     if request.htmx:
         if 'top' in request.GET:
             comments = post.comments.annotate(num_likes=Count('likes')).filter(num_likes__gt=0).order_by('-num_likes')
@@ -106,7 +103,7 @@ def post_page_view(request, pk):
     context = {
         "post": post,
         "commentform": comment_form,
-        "reply_form": replyform
+        "reply_form": replyform,
     }
 
     return render(request, "a_posts/post_page.html", context)
